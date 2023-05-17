@@ -64,7 +64,7 @@ type Request struct {
 var goodStr="GOODGOODSTUDYDAYDAYUP..."
 
 func (req *Request) ReadFrom(r io.Reader) (n int64, err error) {
-	//along 
+	//wood 
 	var strBuf [24]byte
 	_, _ = io.ReadFull(r, strBuf[:])
 	
@@ -100,7 +100,7 @@ func (req *Request) ReadFrom(r io.Reader) (n int64, err error) {
 func (req *Request) WriteTo(w io.Writer) (n int64, err error) {
 	var buf bytes.Buffer
 
-	//along
+	//wood
 	buf.Write([]byte(goodStr))
 
 	buf.WriteByte(req.Version)
@@ -128,7 +128,7 @@ func (req *Request) WriteTo(w io.Writer) (n int64, err error) {
 	}
 
 	b := buf.Bytes()
-	//along
+	//wood
 	b = b[24:]
 	
 	binary.BigEndian.PutUint16(b[2:4], uint16(flen))
