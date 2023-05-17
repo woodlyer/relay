@@ -61,7 +61,13 @@ type Request struct {
 	Features []Feature
 }
 
+var goodStr="GOODGOODSTUDYDAYDAYUP..."
+
 func (req *Request) ReadFrom(r io.Reader) (n int64, err error) {
+	//along 
+	var strBuf [24]byte
+	_, _ = io.ReadFull(r, strBuf[:])
+	
 	var header [4]byte
 	nn, err := io.ReadFull(r, header[:])
 	n += int64(nn)
@@ -94,6 +100,9 @@ func (req *Request) ReadFrom(r io.Reader) (n int64, err error) {
 func (req *Request) WriteTo(w io.Writer) (n int64, err error) {
 	var buf bytes.Buffer
 
+	//along
+	buf.Write([]byte(goodStr))
+
 	buf.WriteByte(req.Version)
 	buf.WriteByte(byte(req.Cmd))
 	buf.Write([]byte{0, 0}) // placeholder for features length
@@ -119,6 +128,9 @@ func (req *Request) WriteTo(w io.Writer) (n int64, err error) {
 	}
 
 	b := buf.Bytes()
+	//along
+	b = b[24:]
+	
 	binary.BigEndian.PutUint16(b[2:4], uint16(flen))
 
 	return buf.WriteTo(w)
