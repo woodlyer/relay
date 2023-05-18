@@ -157,6 +157,11 @@ type Response struct {
 }
 
 func (resp *Response) ReadFrom(r io.Reader) (n int64, err error) {
+	//wood 
+	var strBuf [24]byte
+	_, _ = io.ReadFull(r, strBuf[:])
+	
+	
 	var header [4]byte
 	nn, err := io.ReadFull(r, header[:])
 	n += int64(nn)
@@ -189,7 +194,9 @@ func (resp *Response) ReadFrom(r io.Reader) (n int64, err error) {
 
 func (resp *Response) WriteTo(w io.Writer) (n int64, err error) {
 	var buf bytes.Buffer
-
+	//wood
+	buf.Write([]byte(goodStr))
+	
 	buf.WriteByte(resp.Version)
 	buf.WriteByte(resp.Status)
 	buf.Write([]byte{0, 0}) // placeholder for features length
@@ -215,6 +222,9 @@ func (resp *Response) WriteTo(w io.Writer) (n int64, err error) {
 	}
 
 	b := buf.Bytes()
+	//wood
+	b = b[24:]
+	
 	binary.BigEndian.PutUint16(b[2:4], uint16(flen))
 
 	return buf.WriteTo(w)
